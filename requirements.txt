@@ -1,0 +1,4 @@
+ffmpeg
+discord
+youtube-dl
+PyNacL
