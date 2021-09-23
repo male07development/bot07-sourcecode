@@ -32,6 +32,7 @@ class music(commands.Cog):
       url2 = info['formats'][0]['url']
       source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
       vc.play(source)
+      await ctx.send("Downloading webpage...")
   
   @commands.command()
   async def pause(self,ctx):
