@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import youtube_dl
+import time
 
 class music(commands.Cog):
   def __init__(self, client):
@@ -28,11 +29,14 @@ class music(commands.Cog):
     vc = ctx.voice_client
 
     with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+      embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
+      await ctx.send(embed=embedVar)
       info = ydl.extract_info(url, download=False)
       url2 = info['formats'][0]['url']
       source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
       vc.play(source)
-      await ctx.send(f"Downloading webpage [{info}]...")
+      
+      
   
   @commands.command()
   async def pause(self,ctx):
@@ -43,6 +47,17 @@ class music(commands.Cog):
   async def resume(self,ctx):
     await ctx.voice_client.resume()
     await ctx.send("Resumed current song.")
+    
+  @commands.command()
+  async def cmds(self,ctx):
+    embedVar = discord.Embed(title="Commands", description="Commands for bot07", color=0xff0000)
+    embedVar.add_field(name="!join", value="To play music, join a VC and run this command.", inline=False)
+    embedVar.add_field(name="!play", value="Run the command '!join' while in a VC and then run '!play youtube-link'", inline=False)
+    embedVar.add_field(name="!pause", value="Pause music.", inline=False)
+    embedVar.add_field(name="!resume", value="Resume music.", inline=False)
+    embedVar.add_field(name="!disconnect", value="Disconnect the bot.", inline=False)
+    await ctx.send(embed=embedVar)
+ 
 
 
 def setup(client):
