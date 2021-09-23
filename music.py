@@ -10,7 +10,7 @@ class music(commands.Cog):
   @commands.command()
   async def join(self,ctx):
     if ctx.author.voice is None:
-      await ctx.send("You are not in a voice channel.")
+    await ctx.send("You are not in a voice channel.")
     voice_channel = ctx.author.voice.channel
     if ctx.voice_client is None:
       await voice_channel.connect()
@@ -27,14 +27,16 @@ class music(commands.Cog):
     FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
     YDL_OPTIONS = {'format':'bestaudio'}
     vc = ctx.voice_client
-
-    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-      embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
-      await ctx.send(embed=embedVar)
-      info = ydl.extract_info(url, download=False)
-      url2 = info['formats'][0]['url']
-      source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-      vc.play(source)
+    if ctx.author.voice is None:
+      await ctx.send("You are not in a voice channel.")
+    else:
+        with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+        embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
+        await ctx.send(embed=embedVar)
+        info = ydl.extract_info(url, download=False)
+        url2 = info['formats'][0]['url']
+        source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+        vc.play(source)
       
       
   
