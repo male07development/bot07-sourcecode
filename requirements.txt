@@ -1,4 +1,4 @@
-ffmpeg
 discord
-youtube-dl
-PyNacL
+youtube_dl
+PyNaCl
+ffmpeg
