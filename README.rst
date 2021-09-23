@@ -6,7 +6,7 @@ bot07 sourcecode
    :alt: Discord server invite
 
 The source code of my music bot named "bot07" 
-All notable changes are documented in [CHANGELOG.md](https://github.com/male07development/bot07-sourcecode/blob/main/CHANGELOG.md) 
+All notable changes are documented in `CHANGELOG.md <https://github.com/male07development/bot07-sourcecode/blob/main/CHANGELOG.md>`_
 
 WARNING!!!
 ------------
