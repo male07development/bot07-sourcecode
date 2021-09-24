@@ -9,9 +9,10 @@ class music(commands.Cog):
 
   @commands.command()
   async def join(self,ctx):
-    if ctx.author.voice is None:
-    await ctx.send("You are not in a voice channel.")
     voice_channel = ctx.author.voice.channel
+    if ctx.author.voice is None:
+      await ctx.send("You are not in a voice channel.")
+      voice_channel = ctx.author.voice.channel
     if ctx.voice_client is None:
       await voice_channel.connect()
     else:
@@ -23,22 +24,67 @@ class music(commands.Cog):
   
   @commands.command()
   async def play(self,ctx,url):
-    ctx.voice_client.stop()
-    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
-    YDL_OPTIONS = {'format':'bestaudio'}
-    vc = ctx.voice_client
-    if ctx.author.voice is None:
+    #voice_client = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+    if ctx.author.voice == None:
       await ctx.send("You are not in a voice channel.")
     else:
+      if ctx.voice_client == None:
+        voice_channel = ctx.author.voice.channel
+        await voice_channel.connect()
+        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+        YDL_OPTIONS = {'format':'bestaudio'}
+        vc = ctx.voice_client
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-        embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
-        await ctx.send(embed=embedVar)
-        info = ydl.extract_info(url, download=False)
-        url2 = info['formats'][0]['url']
-        source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-        vc.play(source)
-      
-      
+          embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
+          await ctx.send(embed=embedVar)
+          info = ydl.extract_info(url, download=False)
+          url2 = info['formats'][0]['url']
+          source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+          vc.play(source)
+      else:
+          ctx.voice_client.stop()
+          FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+          YDL_OPTIONS = {'format':'bestaudio'}
+          vc = ctx.voice_client
+          with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+            embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
+            await ctx.send(embed=embedVar)
+            info = ydl.extract_info(url, download=False)
+            url2 = info['formats'][0]['url']
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            vc.play(source)
+
+  @commands.command()
+  async def p(self,ctx,url):
+    #voice_client = discord.utils.get(self.client.voice_clients, guild=ctx.guild)
+    if ctx.author.voice == None:
+      await ctx.send("You are not in a voice channel.")
+    else:
+      if ctx.voice_client == None:
+        voice_channel = ctx.author.voice.channel
+        await voice_channel.connect()
+        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+        YDL_OPTIONS = {'format':'bestaudio'}
+        vc = ctx.voice_client
+        with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+          embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
+          await ctx.send(embed=embedVar)
+          info = ydl.extract_info(url, download=False)
+          url2 = info['formats'][0]['url']
+          source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+          vc.play(source)
+      else:
+          ctx.voice_client.stop()
+          FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+          YDL_OPTIONS = {'format':'bestaudio'}
+          vc = ctx.voice_client
+          with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
+            embedVar = discord.Embed(title="Downloading webpage...", description="Using youtube-dl", color=0xff0000)
+            await ctx.send(embed=embedVar)
+            info = ydl.extract_info(url, download=False)
+            url2 = info['formats'][0]['url']
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            vc.play(source)
   
   @commands.command()
   async def pause(self,ctx):
@@ -59,6 +105,12 @@ class music(commands.Cog):
     embedVar.add_field(name="!resume", value="Resume music.", inline=False)
     embedVar.add_field(name="!disconnect", value="Disconnect the bot.", inline=False)
     await ctx.send(embed=embedVar)
+  @commands.command()  
+  async def on_command_error(ctx, error):
+      if isinstance(error, commands.CommandNotFound):
+          embedVar = discord.Embed(title="Invalid command", description="Use !cmds for a list of commands", color=0xff0000)
+          await ctx.send(embed=embedVar)
+
  
 
 
