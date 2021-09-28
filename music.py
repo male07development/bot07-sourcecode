@@ -8,6 +8,10 @@ class music(commands.Cog):
     self.client = client
 
   @commands.command()
+  async def setprefix(ctx, prefix):
+    commands.Bot.command_prefix=prefix
+    
+  @commands.command()
   async def join(self,ctx):
     voice_channel = ctx.author.voice.channel
     if ctx.author.voice is None:
@@ -17,6 +21,18 @@ class music(commands.Cog):
       await voice_channel.connect()
     else:
       await ctx.voice_client.move_to(voice_channel)
+   
+  @commands.command()
+  async def kidnap(self,ctx):
+    voice_channel = ctx.author.voice.channel
+    if ctx.author.voice is None:
+      await ctx.send("You are not in a voice channel.")
+      voice_channel = ctx.author.voice.channel
+    if ctx.voice_client is None:
+      await voice_channel.connect()
+    else:
+      await ctx.voice_client.move_to(voice_channel)
+
 
   @commands.command()
   async def disconnect(self,ctx):
@@ -99,12 +115,13 @@ class music(commands.Cog):
   @commands.command()
   async def cmds(self,ctx):
     embedVar = discord.Embed(title="Commands", description="Commands for bot07", color=0xff0000)
-    embedVar.add_field(name="!join", value="To play music, join a VC and run this command.", inline=False)
-    embedVar.add_field(name="!play", value="Run the command '!join' while in a VC and then run '!play youtube-link'", inline=False)
+    embedVar.add_field(name="!join", value="Move bot to your vc.", inline=False)
+    embedVar.add_field(name="!play", value="Only plays youtube links for now.", inline=False)
     embedVar.add_field(name="!pause", value="Pause music.", inline=False)
     embedVar.add_field(name="!resume", value="Resume music.", inline=False)
     embedVar.add_field(name="!disconnect", value="Disconnect the bot.", inline=False)
     await ctx.send(embed=embedVar)
+    
   @commands.command()  
   async def on_command_error(ctx, error):
       if isinstance(error, commands.CommandNotFound):
